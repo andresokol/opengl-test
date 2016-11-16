@@ -1,8 +1,11 @@
+#include <iostream>
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 
-#include <iostream>
 #include <GLFW/glfw3.h>
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 int main() {
     // Init GLFW
@@ -42,6 +45,8 @@ int main() {
     glfwGetFramebufferSize(window, &width, &height);
     glViewport(0, 0, width, height);
 
+    // Pass key press handler to GLFW
+    glfwSetKeyCallback(window, key_callback);
 
     // Game loop while no 'close window' signal recieved
     while(!glfwWindowShouldClose(window))
@@ -57,4 +62,13 @@ int main() {
     glfwTerminate();
 
     return 0;
+}
+
+
+void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
+    std::cout << key << " " << scancode << std::endl;
+
+    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+        glfwSetWindowShouldClose(window, GL_TRUE);
+    }
 }
