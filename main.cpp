@@ -20,7 +20,8 @@ const GLchar* fragmentShaderSource = "#version 330 core\n"
         "color = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n"
         "}\n\0";
 
-int main() {
+
+GLFWwindow* initializeGLFW() {
     // Init GLFW
     glfwInit();
 
@@ -41,29 +42,14 @@ int main() {
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
-        return -1;
+        return nullptr;
     }
     glfwMakeContextCurrent(window);
 
-    // Init GLEW
-    glewExperimental = GL_TRUE;
-    if (glewInit() != GLEW_OK)
-    {
-        std::cout << "Failed to initialize GLEW" << std::endl;
-        return -1;
-    }
+    return window;
+}
 
-    // Passing window size to OpenGL
-    int width, height;
-    glfwGetFramebufferSize(window, &width, &height);
-    glViewport(0, 0, width, height);
-
-    // Pass key press handler to GLFW
-    glfwSetKeyCallback(window, key_callback);
-
-
-    // --------- SHADERS --------------
-
+GLuint compileShadersProgram () {
     // Vertex shader
     GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
@@ -104,6 +90,34 @@ int main() {
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
+
+    return shaderProgram;
+}
+
+
+int main() {
+    GLFWwindow* window = initializeGLFW();
+    if (window == nullptr) return -1;
+
+    // Init GLEW
+    glewExperimental = GL_TRUE;
+    if (glewInit() != GLEW_OK)
+    {
+        std::cout << "Failed to initialize GLEW" << std::endl;
+        return -1;
+    }
+
+    // Passing window size to OpenGL
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
+
+    // Pass key press handler to GLFW
+    glfwSetKeyCallback(window, key_callback);
+
+    // --------- SHADERS --------------
+
+    GLuint shaderProgram = compileShadersProgram();
 
     // --------------------------------
 
