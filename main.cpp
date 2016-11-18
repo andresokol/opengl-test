@@ -5,9 +5,13 @@
 #include <GLFW/glfw3.h>
 
 #include "Shader.h"
+#include "Geometry.h"
 
 #define FRAGMENT_SHADER_PATH "d:/code/opengl-test/shaders/fragment.glsl"
 #define VERTEX_SHADER_PATH "d:/code/opengl-test/shaders/vertex.glsl"
+
+#define GEOMETRY_PATH "d:/code/opengl-test/scene/rectangle.scene"
+#define SECONDARY_GEOMETRY_PATH "d:/code/opengl-test/scene/small_triangle.scene"
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
@@ -67,33 +71,17 @@ int main() {
 
     // --------- SCENE ----------------
 
-    // Triangle
-    GLfloat vertices[] = {
-            -0.5f, -0.5f, 0.0f,
-            0.5f, -0.5f, 0.0f,
-            0.5f,  0.5f, 0.0f
-    };
+    Geometry geometry;
+    if(!geometry.loadFromFile(GEOMETRY_PATH)) {
+        std::cout << "ERROR::GEOMETRY_NOT_LOADED";
+    }
+    geometry.generateBuffers();
 
-    // Assign buffer
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    // Bind the Vertex Array Object first, then bind and set vertex buffer(s) and attribute pointer(s).
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-    glEnableVertexAttribArray(0);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);   // Note that this is allowed, the call to glVertexAttribPointer
-                                        // registered VBO as the currently bound vertex buffer object
-                                        // so afterwards we can safely unbind
-    glBindVertexArray(0);
-    // --------------------------------
-
+    Geometry geometry2;
+    if(!geometry2.loadFromFile(SECONDARY_GEOMETRY_PATH)) {
+        std::cout << "ERROR::GEOMETRY_NOT_LOADED";
+    }
+    geometry2.generateBuffers();
 
     // Game loop while no 'close window' signal recieved
     while(!glfwWindowShouldClose(window))
@@ -107,9 +95,8 @@ int main() {
 
         // draw to buffer
         shader.use();
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
-        glBindVertexArray(0);
+        geometry.draw(true);
+        geometry2.draw(true);
 
         // update picture
         glfwSwapBuffers(window);

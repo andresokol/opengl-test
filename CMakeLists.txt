@@ -21,7 +21,7 @@ set(EXTERNAL_LIBS
             ${EXTERNAL_LIBRARIES_PATH}/lib/glew32.dll
         )
 
-set(SOURCE_FILES main.cpp Shader.cpp Shader.h)
+set(SOURCE_FILES main.cpp Shader.cpp Shader.h Geometry.cpp Geometry.h)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
 target_link_libraries(${PROJECT_NAME} PRIVATE ${EXTERNAL_LIBS})
