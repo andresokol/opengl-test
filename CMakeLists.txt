@@ -16,9 +16,10 @@ message(WARNING ${EXTERNAL_LIBRARIES_PATH})
 include_directories(${EXTERNAL_LIBRARIES_PATH}/include)
 
 set(EXTERNAL_LIBS
-            ${OPENGL_LIBRARIES}
-            ${EXTERNAL_LIBRARIES_PATH}/lib/libglfw3.a
-            ${EXTERNAL_LIBRARIES_PATH}/lib/glew32.dll
+        ${EXTERNAL_LIBRARIES_PATH}/lib/libsoil.a
+        ${OPENGL_LIBRARIES}
+        ${EXTERNAL_LIBRARIES_PATH}/lib/libglfw3.a
+        ${EXTERNAL_LIBRARIES_PATH}/lib/glew32.dll
         )
 
 set(SOURCE_FILES main.cpp Shader.cpp Shader.h Geometry.cpp Geometry.h)

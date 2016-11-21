@@ -3,6 +3,7 @@
 //
 
 #include "Shader.h"
+#include <cmath>
 
 Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
     // ----- GET SHADERS FROM FILES -----
@@ -81,4 +82,8 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
 
 void Shader::use() {
     glUseProgram(program);
+//    GLfloat timeValue = glfwGetTime();
+//    GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
+//    GLint vertexColorLocation = glGetUniformLocation(program, "ourColor");
+//    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 }
