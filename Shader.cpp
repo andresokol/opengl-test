@@ -5,7 +5,9 @@
 #include "Shader.h"
 #include <cmath>
 
-Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
+GLuint Shader::Program;
+
+void Shader::loadFromFile(const GLchar *vertexPath, const GLchar *fragmentPath) {
     // ----- GET SHADERS FROM FILES -----
     std::string vertexCode, fragmentCode;
     std::ifstream vShaderFile, fShaderFile;
@@ -65,14 +67,14 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
     }
 
     // Link shaders
-    program = glCreateProgram();
-    glAttachShader(program, vertex);
-    glAttachShader(program, fragment);
-    glLinkProgram(program);
+    Program = glCreateProgram();
+    glAttachShader(Program, vertex);
+    glAttachShader(Program, fragment);
+    glLinkProgram(Program);
 
-    glGetProgramiv(program, GL_LINK_STATUS, &success);
+    glGetProgramiv(Program, GL_LINK_STATUS, &success);
     if (!success) {
-        glGetProgramInfoLog(program, 512, NULL, infoLog);
+        glGetProgramInfoLog(Program, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
 
@@ -81,9 +83,5 @@ Shader::Shader(const GLchar *vertexPath, const GLchar *fragmentPath) {
 }
 
 void Shader::use() {
-    glUseProgram(program);
-//    GLfloat timeValue = glfwGetTime();
-//    GLfloat greenValue = (sin(timeValue) / 2) + 0.5;
-//    GLint vertexColorLocation = glGetUniformLocation(program, "ourColor");
-//    glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+    glUseProgram(Program);
 }

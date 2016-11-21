@@ -14,11 +14,9 @@
 #include <sstream>
 #include <iostream>
 
-class Shader {
-private:
-    GLuint program;
-public:
-    Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
+namespace Shader {
+    extern GLuint Program;
+    void loadFromFile(const GLchar* vertexPath, const GLchar* fragmentPath);
     void use();
 };
 

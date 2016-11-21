@@ -9,6 +9,12 @@
 #include <sstream>
 #include <iostream>
 
+#include "Shader.h"
+
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 #include "SOIL.h"
 
 Geometry::Geometry() {
@@ -112,10 +118,21 @@ Geometry::~Geometry() {
     glDeleteBuffers(1, &_VBO);
 }
 
-void Geometry::draw(bool unbindVAO) {
+void Geometry::draw(const glm::vec3& translateVec, const GLfloat& rotateAngle, const glm::vec3& rotateVec, bool unbindVAO) {
+    glm::mat4 transform;
+    transform = glm::translate(transform, translateVec);
+    transform = glm::rotate(transform, rotateAngle, rotateVec);
+
+    GLint transformLoc = glGetUniformLocation(Shader::Program, "transform");
+    glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
+
+    Shader::use();
+
     glBindVertexArray(_VAO);
     if(_hasTexture) glBindTexture(GL_TEXTURE_2D, _texture);
+
     glDrawElements(GL_TRIANGLES, 3 * _primitivesCount, GL_UNSIGNED_INT, 0);
+
     if (unbindVAO) glBindVertexArray(0);
 }
 

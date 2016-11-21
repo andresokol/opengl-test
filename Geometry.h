@@ -10,6 +10,10 @@
 #include <GLFW/glfw3.h>
 #include <string>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 class Geometry {
 private:
     GLfloat* _verticesCoords;
@@ -32,7 +36,7 @@ public:
     bool loadFromFile(const GLchar* filePath);
     void generateBuffers();
 
-    void draw(bool unbindVAO);
+    void draw(const glm::vec3& translateVec, const GLfloat& rotateAngle, const glm::vec3& rotateVec, bool unbindVAO);
 };
 
 
